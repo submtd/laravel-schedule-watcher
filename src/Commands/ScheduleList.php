@@ -27,7 +27,6 @@ class ScheduleList extends Command
         $lastRunDates = Cache::get('laravel-schedule-watcher-events', []);
         $rows = [];
         foreach ($this->schedule->events() as $event) {
-            dd($event);
             $name = $event->getSummaryForDisplay();
             $expression = $event->getExpression();
             $nextRun = $event->nextRunDate();
@@ -40,8 +39,9 @@ class ScheduleList extends Command
                 $isDue,
                 (string) $nextRun,
                 (string) $shouldHaveRan,
-                (string) $lastRun,
-                $shouldHaveRan < $lastRun ? 0 : $shouldHaveRan->diffInMinutes($lastRun),
+                (string) json_encode($lastRun),
+                null,
+                // $shouldHaveRan < $lastRun ? 0 : $shouldHaveRan->diffInMinutes($lastRun),
             ];
         }
         $this->table(['Event', 'Expression', 'Is Due', 'Next Run', 'Should Have Ran', 'Last Run', 'Difference'], $rows);
