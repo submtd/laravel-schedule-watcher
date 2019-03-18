@@ -31,7 +31,7 @@ class ScheduleList extends Command
             $this->info('Name: ' . static::fixupCommand($name));
             $this->info('Expression: ' . $event->getExpression());
             $this->info('Is Due: ' . $event->isDue(app()));
-            $this->info('Last Run: ' . isset($lastRunDates[md5($name)]) ? end($lastRunDates[md5($name)])['startTime'] : 'never');
+            $this->info('Last Run: ' . isset($lastRunDates[md5($name)]) ? end($lastRunDates[md5($name)]) : 'never');
             // $expression = $event->getExpression();
             // $nextRun = $event->nextRunDate();
             // $shouldHaveRan = Carbon::parse(CronExpression::factory($expression)->getPreviousRunDate()->format('Y-m-d H:i:s'));
