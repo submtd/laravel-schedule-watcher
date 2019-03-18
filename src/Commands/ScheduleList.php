@@ -22,8 +22,9 @@ class ScheduleList extends Command
 
     public function handle()
     {
-        dd($this->schedule->dueEvents(app()));
-        dd($this->schedule->events());
+        foreach ($this->schedule->events() as $event) {
+            dd(get_class_methods($event));
+        }
         $events = array_map(function ($event) {
             return [
                 'cron' => $event->expression,
