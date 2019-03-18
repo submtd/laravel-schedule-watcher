@@ -33,7 +33,7 @@ class ScheduleList extends Command
             $lastRun = isset($lastRunDates[$name]) ? $lastRunDates[$name] : null;
             $isDue = $event->isDue(app());
             $rows[] = [
-                $name,
+                static::fixupCommand($name),
                 $expression,
                 $isDue,
                 (string) $nextRun,

@@ -17,4 +17,13 @@ class DecoratedScheduleRunCommand extends ScheduleRunCommand
         $event->run($this->laravel);
         $this->eventsRan = true;
     }
+
+    protected static function fixupCommand($command)
+    {
+        $parts = explode(' ', $command);
+        if (count($parts) > 2 && $parts[1] === 'artisan') {
+            array_shift($parts);
+        }
+        return implode(' ', $parts);
+    }
 }
