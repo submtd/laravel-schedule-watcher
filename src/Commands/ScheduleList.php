@@ -22,6 +22,7 @@ class ScheduleList extends Command
 
     public function handle()
     {
+        dd(get_class_methods($this->schedule));
         dd($this->schedule->events());
         $events = array_map(function ($event) {
             return [
