@@ -25,7 +25,6 @@ class ScheduleList extends Command
     public function handle()
     {
         $lastRunDates = Cache::get('laravel-schedule-watcher-events', []);
-        $rows = [];
         foreach ($this->schedule->events() as $event) {
             $name = $event->getSummaryForDisplay();
             $this->info('Name: ' . static::fixupCommand($name));
