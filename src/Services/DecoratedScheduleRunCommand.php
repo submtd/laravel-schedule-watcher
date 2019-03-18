@@ -17,9 +17,9 @@ class DecoratedScheduleRunCommand extends ScheduleRunCommand
         $this->eventsRan = true;
         $endTime = Carbon::now();
         $laravelScheduleWatcherEvents = Cache::get('laravel-schedule-watcher-events') ?? [];
-        $laravelScheduleWatcherEvents[$name][] = [
-            'startTime' => (string) $startTime,
-            'endTime' => (string) $endTime,
+        $laravelScheduleWatcherEvents[md5($name)][] = [
+            'startTime' => $startTime,
+            'endTime' => $endTime,
             'totalTime' => $startTime->diffInSeconds($endTime),
         ];
         $laravelScheduleWatcherEvents[$name] = array_slice($laravelScheduleWatcherEvents[$name], -10, 10);
