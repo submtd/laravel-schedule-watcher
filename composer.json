@@ -1,0 +1,23 @@
+{
+    "name": "submtd/laravel-schedule-watcher",
+    "description": "Replaces the Laravel schedule class with a custom class that will allow you to list cron tasks and fire warnings if tasks do not run.",
+    "authors": [
+        {
+            "name": "Steve Harmeyer",
+            "email": "harmeyersteve@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Submtd\\LaravelScheduleWatcher\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Submtd\\LaravelScheduleWatcher\\Providers\\LaravelScheduleWatcherServiceProvider"
+            ]
+        }
+    }
+}
