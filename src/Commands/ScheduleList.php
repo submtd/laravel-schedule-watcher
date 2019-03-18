@@ -39,7 +39,7 @@ class ScheduleList extends Command
                 (string) $nextRun,
                 (string) $shouldHaveRan,
                 (string) $lastRun,
-                $shouldHaveRan->diffInMinutes($lastRun),
+                $shouldHaveRan < $lastRun ? 0 : $shouldHaveRan->diffInMinutes($lastRun),
             ];
         }
         $this->table(['Event', 'Expression', 'Is Due', 'Next Run', 'Should Have Ran', 'Last Run', 'Difference'], $rows);
