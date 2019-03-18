@@ -26,18 +26,20 @@ class ScheduleList extends Command
         $rows = [];
         foreach ($this->schedule->events() as $event) {
             $name = $event->getSummaryForDisplay();
+            $expression = $event->getExpression();
             $nextRun = $event->nextRunDate();
             $lastRun = isset($lastRunDates[$name]) ? $lastRunDates[$name] : null;
             $isDue = $event->isDue(app());
             $rows[] = [
                 $name,
+                $expression,
                 $isDue,
                 (string) $nextRun,
                 (string) $lastRun,
                 $nextRun->diffInMinutes(Carbon::now()),
             ];
         }
-        $this->table(['Event', 'Is Due', 'Next Run', 'Last Run', 'Difference'], $rows);
+        $this->table(['Event', 'Expression', 'Is Due', 'Next Run', 'Last Run', 'Difference'], $rows);
     }
 
     protected static function fixupCommand($command)
