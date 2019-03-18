@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Console\Scheduling\Schedule;
+use Cron\CronExpression;
 
 class ScheduleList extends Command
 {
@@ -28,6 +29,7 @@ class ScheduleList extends Command
             $name = $event->getSummaryForDisplay();
             $expression = $event->getExpression();
             $nextRun = $event->nextRunDate();
+            $shouldHaveRan = Carbon::parse(CronExpression::factory($expression)->getPreviousRunDate()->format('Y-m-d H:i:s'));
             $lastRun = isset($lastRunDates[$name]) ? $lastRunDates[$name] : null;
             $isDue = $event->isDue(app());
             $rows[] = [
@@ -35,11 +37,12 @@ class ScheduleList extends Command
                 $expression,
                 $isDue,
                 (string) $nextRun,
+                (string) $shouldHaveRan,
                 (string) $lastRun,
-                $nextRun->diffInMinutes(Carbon::now()),
+                $shouldHaveRan->diffInMinutes($lastRun),
             ];
         }
-        $this->table(['Event', 'Expression', 'Is Due', 'Next Run', 'Last Run', 'Difference'], $rows);
+        $this->table(['Event', 'Expression', 'Is Due', 'Next Run', 'Should Have Ran', 'Last Run', 'Difference'], $rows);
     }
 
     protected static function fixupCommand($command)

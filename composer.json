@@ -7,7 +7,9 @@
             "email": "harmeyersteve@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "mtdownling/cron-expression": "^1.2"
+    },
     "autoload": {
         "psr-4": {
             "Submtd\\LaravelScheduleWatcher\\": "src/"
