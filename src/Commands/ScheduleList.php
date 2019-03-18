@@ -39,7 +39,7 @@ class ScheduleList extends Command
                 $isDue,
                 (string) $nextRun,
                 (string) $shouldHaveRan,
-                $this->table(['Start Time', 'End Time', 'Total Time'], $lastRun),
+                $this->table(['Start Time', 'End Time', 'Total Time'], $lastRun ?? []),
                 null,
                 // $shouldHaveRan < $lastRun ? 0 : $shouldHaveRan->diffInMinutes($lastRun),
             ];
