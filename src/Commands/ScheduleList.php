@@ -23,7 +23,7 @@ class ScheduleList extends Command
     public function handle()
     {
         foreach ($this->schedule->events() as $event) {
-            dd(get_class_methods($event));
+            dd($event->nextRunDate());
         }
         $events = array_map(function ($event) {
             return [
