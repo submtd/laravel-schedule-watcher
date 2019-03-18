@@ -28,6 +28,7 @@ class ScheduleList extends Command
                 'command' => static::fixUpCommand($event->command),
             ];
         }, $this->schedule->events());
+        dd($events);
         $this->info(json_encode($events));
         $scheduledEvents = Cache::get('laravel-schedule-watcher-events') ?? [];
         $rows = [];
