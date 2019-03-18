@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Console\Scheduling\Schedule;
 use Cron\CronExpression;
+use Illuminate\Support\Str;
 
 class ScheduleList extends Command
 {
@@ -52,6 +53,6 @@ class ScheduleList extends Command
             array_shift($parts);
             array_shift($parts);
         }
-        return implode(' ', $parts);
+        return Str::before(implode(' ', $parts), '>');
     }
 }
