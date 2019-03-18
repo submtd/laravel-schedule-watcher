@@ -32,7 +32,17 @@ class ScheduleList extends Command
             $this->info('Is Due: ' . $event->isDue(app()));
             if (!isset($lastRunDates[md5($name)])) {
                 $this->warn('No previous run dates found.');
+                continue;
             }
+            $rows = [];
+            foreach ($lastRunDates[md5($name)] as $lastRunDate) {
+                $rows[] = [
+                    (string) $lastRunDate['startTime'],
+                    (string) $lastRunDate['endTime'],
+                    $lastRunDate['totalTime'],
+                ];
+            }
+            $this->table(['Start Time', 'End Time', 'Total Time'], $rows);
             // $this->info('Last Run: ' . isset($lastRunDates[md5($name)]) ? $lastRunDates[md5($name)] : 'never');
             // $expression = $event->getExpression();
             // $nextRun = $event->nextRunDate();
