@@ -22,23 +22,22 @@ class ScheduleList extends Command
 
     public function handle()
     {
-        foreach ($this->schedule->events() as $event) {
-            dd($event->nextRunDate());
-        }
-        $events = array_map(function ($event) {
-            return [
-                'cron' => $event->expression,
-                'command' => static::fixUpCommand($event->command),
-            ];
-        }, $this->schedule->events());
-        dd($events);
-        $this->info(json_encode($events));
-        $scheduledEvents = Cache::get('laravel-schedule-watcher-events') ?? [];
+        $lastRunDates = Cache::get('laravel-schedule-watcher-events', []);
         $rows = [];
-        foreach ($scheduledEvents as $event => $lastRun) {
-            $rows[] = [$event, (string)$lastRun, $lastRun->diffInMinutes(Carbon::now())];
+        foreach ($this->schedule->events() as $event) {
+            $name = $event->getSummaryForDisplay();
+            $nextRun = $event->nextRunDate();
+            $lastRun = isset($lastRunDates[$name]) ? $lastRunDates[$name] : null;
+            $isDue = $event->isDue(app());
+            $rows[] = [
+                $name,
+                $isDue,
+                (string) $nextRun,
+                (string) $lastRun,
+                $nextRun->diffInMinutes(Carbon::now()),
+            ];
         }
-        $this->table(['Event', 'Last Run', 'Difference'], $rows);
+        $this->table(['Event', 'Is Due', 'Next Run', 'Last Run', 'Difference'], $rows);
     }
 
     protected static function fixupCommand($command)
