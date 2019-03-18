@@ -27,6 +27,7 @@ class ScheduleList extends Command
         $lastRunDates = Cache::get('laravel-schedule-watcher-events', []);
         $rows = [];
         foreach ($this->schedule->events() as $event) {
+            dd($event);
             $name = $event->getSummaryForDisplay();
             $expression = $event->getExpression();
             $nextRun = $event->nextRunDate();
