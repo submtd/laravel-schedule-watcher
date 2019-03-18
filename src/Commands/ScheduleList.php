@@ -31,7 +31,7 @@ class ScheduleList extends Command
             $expression = $event->getExpression();
             $nextRun = $event->nextRunDate();
             $shouldHaveRan = Carbon::parse(CronExpression::factory($expression)->getPreviousRunDate()->format('Y-m-d H:i:s'));
-            $lastRun = isset($lastRunDates[$name]) ? $lastRunDates[$name] : null;
+            $lastRun = isset($lastRunDates[md5($name)]) ? $lastRunDates[md5($name)] : null;
             $isDue = $event->isDue(app());
             $rows[] = [
                 static::fixupCommand($name),
@@ -39,7 +39,7 @@ class ScheduleList extends Command
                 $isDue,
                 (string) $nextRun,
                 (string) $shouldHaveRan,
-                (string) json_encode($lastRun),
+                $this->table(['Start Time', 'End Time', 'Total Time'], $lastRun),
                 null,
                 // $shouldHaveRan < $lastRun ? 0 : $shouldHaveRan->diffInMinutes($lastRun),
             ];
