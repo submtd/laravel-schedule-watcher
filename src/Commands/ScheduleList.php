@@ -28,23 +28,27 @@ class ScheduleList extends Command
         $rows = [];
         foreach ($this->schedule->events() as $event) {
             $name = $event->getSummaryForDisplay();
-            $expression = $event->getExpression();
-            $nextRun = $event->nextRunDate();
-            $shouldHaveRan = Carbon::parse(CronExpression::factory($expression)->getPreviousRunDate()->format('Y-m-d H:i:s'));
-            $lastRun = isset($lastRunDates[md5($name)]) ? $lastRunDates[md5($name)] : null;
-            $isDue = $event->isDue(app());
-            $rows[] = [
-                static::fixupCommand($name),
-                $expression,
-                $isDue,
-                (string) $nextRun,
-                (string) $shouldHaveRan,
-                $this->table(['Start Time', 'End Time', 'Total Time'], $lastRun ?? []),
-                null,
-                // $shouldHaveRan < $lastRun ? 0 : $shouldHaveRan->diffInMinutes($lastRun),
-            ];
+            $this->info('Name: ' . static::fixupCommand($name));
+            $this->info('Expression: ' . $event->getExpression());
+            $this->info('Is Due: ' . $event->isDue(app()));
+            $this->info('Last Run: ' . isset($lastRunDates[md5($name)]) ? end($lastRunDates[md5($name)]['startTime']) : 'never');
+            // $expression = $event->getExpression();
+            // $nextRun = $event->nextRunDate();
+            // $shouldHaveRan = Carbon::parse(CronExpression::factory($expression)->getPreviousRunDate()->format('Y-m-d H:i:s'));
+            // $lastRun = isset($lastRunDates[md5($name)]) ? $lastRunDates[md5($name)] : null;
+            // $isDue = $event->isDue(app());
+            // $rows[] = [
+            //     static::fixupCommand($name),
+            //     $expression,
+            //     $isDue,
+            //     (string) $nextRun,
+            //     (string) $shouldHaveRan,
+            //     $this->table(['Start Time', 'End Time', 'Total Time'], $lastRun ?? []),
+            //     null,
+            //     // $shouldHaveRan < $lastRun ? 0 : $shouldHaveRan->diffInMinutes($lastRun),
+            // ];
         }
-        $this->table(['Event', 'Expression', 'Is Due', 'Next Run', 'Should Have Ran', 'Last Run', 'Difference'], $rows);
+        // $this->table(['Event', 'Expression', 'Is Due', 'Next Run', 'Should Have Ran', 'Last Run', 'Difference'], $rows);
     }
 
     protected static function fixupCommand($command)
