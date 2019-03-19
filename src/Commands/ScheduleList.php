@@ -29,7 +29,7 @@ class ScheduleList extends Command
                 'command' => static::fixupCommand($event->getSummaryForDisplay()),
                 'expression' => $event->getExpression(),
                 'isDue' => $event->isDue(app()),
-                'nextRun' => $event->nextRunDate(),
+                'nextRun' => (string) $event->nextRunDate(),
             ];
             // $name = $event->getSummaryForDisplay();
             // $this->info('Name: ' . static::fixupCommand($name));
