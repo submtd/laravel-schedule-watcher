@@ -26,7 +26,7 @@ class ScheduleList extends Command
     {
         $output = [];
         foreach ($this->schedule->events() as $event) {
-            $shouldHaveRun = Carbon::parse(CronExpression::factory($event->getExpression())->format('Y-m-d H:i:s'));
+            $shouldHaveRun = Carbon::parse(CronExpression::factory($event->getExpression())->getPreviousRunDate()->format('Y-m-d H:i:s'));
             $output[$event->id()] = [
                 'command' => static::fixupCommand($event->getSummaryForDisplay()),
                 'expression' => $event->getExpression(),
