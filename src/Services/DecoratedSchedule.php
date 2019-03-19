@@ -8,18 +8,25 @@ use Submtd\LaravelScheduleWatcher\DecoratedEvent;
 class DecoratedSchedule extends Schedule
 {
     /**
+     * The timezone the date should be evaluated on.
+     *
+     * @var \DateTimeZone|string
+     */
+    protected $timezone;
+
+    /**
      * Add a new command event to the schedule.
      *
      * @param  string  $command
      * @param  array  $parameters
      * @return \Illuminate\Console\Scheduling\Event
      */
-    // public function exec($command, array $parameters = [])
-    // {
-    //     if (count($parameters)) {
-    //         $command .= ' ' . $this->compileParameters($parameters);
-    //     }
-    //     $this->events[] = $event = new DecoratedEvent($this->eventMutex, $command, $this->timezone);
-    //     return $event;
-    // }
+    public function exec($command, array $parameters = [])
+    {
+        if (count($parameters)) {
+            $command .= ' ' . $this->compileParameters($parameters);
+        }
+        $this->events[] = $event = new DecoratedEvent($this->eventMutex, $command, $this->timezone);
+        return $event;
+    }
 }
