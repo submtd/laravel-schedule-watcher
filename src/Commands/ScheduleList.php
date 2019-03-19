@@ -26,51 +26,19 @@ class ScheduleList extends Command
     {
         $output = [];
         foreach ($this->schedule->events() as $event) {
-            $shouldHaveRun = Carbon::parse(CronExpression::factory($event->getExpression())->getPreviousRunDate()->format('Y-m-d H:i:s'));
+            $cronExpression = CronExpression::factory($event->getExpression());
+            $warnSince = Carbon::parse($cronExpression->getPreviousRunDate()->format('Y-m-d H:i:s'));
+            $errorSince = Carbon::parse($cronExpression->getPreviousRunDate(null, 5)->format('Y-m-d H:i:s'));
+            $lastRuns = Cache::tags(['laravel-schedule-watcher'])->get($event->id());
             $output[$event->id()] = [
                 'command' => static::fixupCommand($event->getSummaryForDisplay()),
                 'expression' => $event->getExpression(),
                 'isDue' => $event->isDue(app()),
                 'nextRun' => (string) $event->nextRunDate(),
-                'shouldHaveRun' => (string) $shouldHaveRun,
-                'lastRuns' => Cache::tags(['laravel-schedule-watcher'])->get($event->id(), []),
+                'lastRun' => !is_null($lastRuns) ? (string) end($lastRuns)['startTime'] : null,
             ];
-            // $name = $event->getSummaryForDisplay();
-            // $this->info('Name: ' . static::fixupCommand($name));
-            // $this->info('Expression: ' . $event->getExpression());
-            // $this->info('Is Due: ' . $event->isDue(app()));
-            // if (!isset($lastRunDates[md5($name)])) {
-            //     $this->warn('No previous run dates found.');
-            //     continue;
-            // }
-            // $rows = [];
-            // foreach ($lastRunDates[md5($name)] as $lastRunDate) {
-            //     $rows[] = [
-            //         (string) $lastRunDate['startTime'],
-            //         (string) $lastRunDate['endTime'],
-            //         $lastRunDate['totalTime'],
-            //     ];
-            // }
-            // $this->table(['Start Time', 'End Time', 'Total Time'], $rows);
-            // $this->info('Last Run: ' . isset($lastRunDates[md5($name)]) ? $lastRunDates[md5($name)] : 'never');
-            // $expression = $event->getExpression();
-            // $nextRun = $event->nextRunDate();
-            // $shouldHaveRan = Carbon::parse(CronExpression::factory($expression)->getPreviousRunDate()->format('Y-m-d H:i:s'));
-            // $lastRun = isset($lastRunDates[md5($name)]) ? $lastRunDates[md5($name)] : null;
-            // $isDue = $event->isDue(app());
-            // $rows[] = [
-            //     static::fixupCommand($name),
-            //     $expression,
-            //     $isDue,
-            //     (string) $nextRun,
-            //     (string) $shouldHaveRan,
-            //     $this->table(['Start Time', 'End Time', 'Total Time'], $lastRun ?? []),
-            //     null,
-            //     // $shouldHaveRan < $lastRun ? 0 : $shouldHaveRan->diffInMinutes($lastRun),
-            // ];
         }
         $this->info(json_encode($output));
-        // $this->table(['Event', 'Expression', 'Is Due', 'Next Run', 'Should Have Ran', 'Last Run', 'Difference'], $rows);
     }
 
     protected static function fixupCommand($command)
