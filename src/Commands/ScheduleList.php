@@ -30,13 +30,20 @@ class ScheduleList extends Command
             $warnSince = Carbon::parse($cronExpression->getPreviousRunDate()->format('Y-m-d H:i:s'));
             $errorSince = Carbon::parse($cronExpression->getPreviousRunDate(null, 5)->format('Y-m-d H:i:s'));
             $lastRuns = Cache::tags(['laravel-schedule-watcher'])->get($event->id());
+            $lastRun = !is_null($lastRuns) ? end($lastRuns)['startTime'] : null;
             $output[$event->id()] = [
                 'command' => static::fixupCommand($event->getSummaryForDisplay()),
                 'expression' => $event->getExpression(),
                 'isDue' => $event->isDue(app()),
                 'nextRun' => (string) $event->nextRunDate(),
-                'lastRun' => !is_null($lastRuns) ? (string) end($lastRuns)['startTime'] : null,
+                'lastRun' => (string) $lastRun,
             ];
+            if ($warnSince > $lastRun) {
+                $output[$event->id()]['warning'] = 'Last run should be greater than ' . (string) $warnSince;
+            }
+            if ($errorSince > $lastRun) {
+                $output[$event->id()]['error'] = 'Last run should be greater than ' . (string) $errorSince;
+            }
         }
         $this->info(json_encode($output));
     }
