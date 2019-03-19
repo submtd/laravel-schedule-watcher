@@ -2,6 +2,8 @@
 
 namespace Submtd\LaravelScheduleWatcher;
 
-class DecoratedEvent
+use Illuminate\Console\Scheduling\Event;
+
+class DecoratedEvent extends Event
 {
 }
