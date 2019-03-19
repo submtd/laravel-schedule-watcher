@@ -54,6 +54,7 @@ class ScheduleList extends Command
         }
         // return tables
         foreach ($output as $event) {
+            $this->line('');
             $this->line($event['id']);
             $this->info('Command: ' . $event['command']);
             $this->info('Expression: ' . $event['expression']);
