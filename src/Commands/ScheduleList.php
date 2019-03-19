@@ -11,7 +11,7 @@ use Carbon\Carbon;
 
 class ScheduleList extends Command
 {
-    protected $signature = 'schedule:list';
+    protected $signature = 'schedule:list {--json}';
     protected $description = 'Shows a list of scheduled events and when they last ran.';
 
     protected $schedule;
