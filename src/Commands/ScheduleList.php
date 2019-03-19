@@ -56,6 +56,14 @@ class ScheduleList extends Command
             $this->info('Command: ' . $event['command']);
             $this->info('Expression: ' . $event['expression']);
             $this->info('Is Due: ' . $event['isDue']);
+            $this->info('Next Run: ' . $event['nextRun']);
+            $this->info('Last Run: ' . $event['lastRun']);
+            if (isset($event['warning'])) {
+                $this->warn($event['warning']);
+            }
+            if (isset($event['error'])) {
+                $this->error($event['error']);
+            }
             $this->line('--------------------------------------------------------------------------------');
             $this->line('');
         }
