@@ -37,6 +37,7 @@ class ScheduleList extends Command
                 'isDue' => $event->isDue(app()),
                 'nextRun' => (string) $event->nextRunDate(),
                 'lastRun' => (string) $lastRun,
+                'lastRuns' => $lastRuns,
             ];
             if ($warnSince > $lastRun) {
                 $output[$event->id()]['warning'] = 'Last run should be greater than ' . (string) $warnSince;
@@ -45,9 +46,14 @@ class ScheduleList extends Command
                 $output[$event->id()]['error'] = 'Last run should be greater than ' . (string) $errorSince;
             }
         }
+        // return json
         if ($this->option('json')) {
             $this->info(json_encode($output));
             return;
+        }
+        // return tables
+        foreach ($output as $event) {
+            $this->line($event['command']);
         }
     }
 
