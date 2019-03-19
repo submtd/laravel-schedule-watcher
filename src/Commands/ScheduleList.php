@@ -11,7 +11,7 @@ use Carbon\Carbon;
 
 class ScheduleList extends Command
 {
-    protected $signature = 'schedule:list {--json} {--verbose}';
+    protected $signature = 'schedule:list {--json} {--detail}';
     protected $description = 'Shows a list of scheduled events and when they last ran.';
 
     protected $schedule;
@@ -65,7 +65,7 @@ class ScheduleList extends Command
             if (isset($event['error'])) {
                 $this->error($event['error']);
             }
-            if ($this->option('verbose')) {
+            if ($this->option('detail')) {
                 $rows = [];
                 foreach ($event['lastRuns'] as $runs) {
                     $rows[] = [
