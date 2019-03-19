@@ -23,8 +23,12 @@ class ScheduleList extends Command
 
     public function handle()
     {
+        $output = [];
         foreach ($this->schedule->events() as $event) {
-            $this->info('Name: ' . static::fixupCommand($event->getSummaryForDisplay()));
+            $output[$event->id()] = [
+                'command' => static::fixupCommand($event->getSummaryForDisplay()),
+            ];
+            $this->info(json_encode($output));
             // $name = $event->getSummaryForDisplay();
             // $this->info('Name: ' . static::fixupCommand($name));
             // $this->info('Expression: ' . $event->getExpression());
