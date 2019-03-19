@@ -73,6 +73,6 @@ class ScheduleList extends Command
             array_shift($parts);
             array_shift($parts);
         }
-        return Str::before(implode(' ', $parts), '>');
+        return trim(Str::before(implode(' ', $parts), '>'));
     }
 }
