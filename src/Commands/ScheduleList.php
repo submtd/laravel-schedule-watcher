@@ -77,7 +77,7 @@ class ScheduleList extends Command
                         isset($runs['totalTime']) ? $runs['totalTime'] : null,
                     ];
                 }
-                $this->table(['Start Time', 'End Time', 'Total Time'], $rows);
+                $this->table(['Start Time', 'End Time', 'Run Time (seconds)'], $rows);
             }
         }
     }
