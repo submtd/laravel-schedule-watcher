@@ -28,7 +28,6 @@ class ScheduleList extends Command
             $output[$event->id()] = [
                 'command' => static::fixupCommand($event->getSummaryForDisplay()),
             ];
-            $this->info(json_encode($output));
             // $name = $event->getSummaryForDisplay();
             // $this->info('Name: ' . static::fixupCommand($name));
             // $this->info('Expression: ' . $event->getExpression());
@@ -63,6 +62,7 @@ class ScheduleList extends Command
             //     // $shouldHaveRan < $lastRun ? 0 : $shouldHaveRan->diffInMinutes($lastRun),
             // ];
         }
+        $this->info(json_encode($output));
         // $this->table(['Event', 'Expression', 'Is Due', 'Next Run', 'Should Have Ran', 'Last Run', 'Difference'], $rows);
     }
 
