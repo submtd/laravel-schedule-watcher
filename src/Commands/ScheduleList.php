@@ -6,6 +6,8 @@ use Illuminate\Console\Command;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
+use Cron\CronExpression;
+use Carbon\Carbon;
 
 class ScheduleList extends Command
 {
@@ -24,11 +26,13 @@ class ScheduleList extends Command
     {
         $output = [];
         foreach ($this->schedule->events() as $event) {
+            $shouldHaveRun = Carbon::parse(CronExpression::factory($event->getExpression())->format('Y-m-d H:i:s'));
             $output[$event->id()] = [
                 'command' => static::fixupCommand($event->getSummaryForDisplay()),
                 'expression' => $event->getExpression(),
                 'isDue' => $event->isDue(app()),
                 'nextRun' => (string) $event->nextRunDate(),
+                'shouldHaveRun' => (string) $shouldHaveRun,
                 'lastRuns' => Cache::tags(['laravel-schedule-watcher'])->get($event->id(), []),
             ];
             // $name = $event->getSummaryForDisplay();
