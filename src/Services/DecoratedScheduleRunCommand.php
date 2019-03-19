@@ -5,11 +5,13 @@ namespace Submtd\LaravelScheduleWatcher\Services;
 use Carbon\Carbon;
 use Illuminate\Console\Scheduling\ScheduleRunCommand;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class DecoratedScheduleRunCommand extends ScheduleRunCommand
 {
     protected function runEvent($event)
     {
+        Log::error(get_class($event));
         $name = $event->getSummaryForDisplay();
         $startTime = Carbon::now();
         $this->line("<info>Running scheduled command:</info> $name");
