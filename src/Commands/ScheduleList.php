@@ -45,7 +45,10 @@ class ScheduleList extends Command
                 $output[$event->id()]['error'] = 'Last run should be greater than ' . (string) $errorSince;
             }
         }
-        $this->info(json_encode($output));
+        if ($this->option('json')) {
+            $this->info(json_encode($output));
+            return;
+        }
     }
 
     protected static function fixupCommand($command)
