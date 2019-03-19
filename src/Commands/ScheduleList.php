@@ -27,6 +27,9 @@ class ScheduleList extends Command
         foreach ($this->schedule->events() as $event) {
             $output[$event->id()] = [
                 'command' => static::fixupCommand($event->getSummaryForDisplay()),
+                'expression' => $event->getExpression(),
+                'isDue' => $event->isDue(app()),
+                'nextRun' => $event->nextRunDate(),
             ];
             // $name = $event->getSummaryForDisplay();
             // $this->info('Name: ' . static::fixupCommand($name));
