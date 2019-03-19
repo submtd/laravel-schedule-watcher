@@ -32,6 +32,7 @@ class ScheduleList extends Command
             $lastRuns = Cache::tags(['laravel-schedule-watcher'])->get($event->id(), []);
             $lastRun = !empty($lastRuns) ? end($lastRuns)['startTime'] : null;
             $output[$event->id()] = [
+                'id' => $event->id(),
                 'command' => static::fixupCommand($event->getSummaryForDisplay()),
                 'expression' => $event->getExpression(),
                 'isDue' => $event->isDue(app()),
@@ -53,6 +54,7 @@ class ScheduleList extends Command
         }
         // return tables
         foreach ($output as $event) {
+            $this->line($event['id']);
             $this->info('Command: ' . $event['command']);
             $this->info('Expression: ' . $event['expression']);
             $this->info('Is Due: ' . $event['isDue']);
@@ -75,7 +77,6 @@ class ScheduleList extends Command
                 }
                 $this->table(['Start Time', 'End Time', 'Total Time'], $rows);
             }
-            $this->line('--------------------------------------------------------------------------------');
         }
     }
 
