@@ -29,8 +29,8 @@ class ScheduleList extends Command
             $cronExpression = CronExpression::factory($event->getExpression());
             $warnSince = Carbon::parse($cronExpression->getPreviousRunDate()->format('Y-m-d H:i:s'));
             $errorSince = Carbon::parse($cronExpression->getPreviousRunDate(null, 5)->format('Y-m-d H:i:s'));
-            $lastRuns = Cache::tags(['laravel-schedule-watcher'])->get($event->id());
-            $lastRun = !is_null($lastRuns) ? end($lastRuns)['startTime'] : null;
+            $lastRuns = Cache::tags(['laravel-schedule-watcher'])->get($event->id(), []);
+            $lastRun = !empty($lastRuns) ? end($lastRuns)['startTime'] : null;
             $output[$event->id()] = [
                 'command' => static::fixupCommand($event->getSummaryForDisplay()),
                 'expression' => $event->getExpression(),
