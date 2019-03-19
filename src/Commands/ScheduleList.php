@@ -53,7 +53,6 @@ class ScheduleList extends Command
         }
         // return tables
         foreach ($output as $event) {
-            $this->line('');
             $this->info('Command: ' . $event['command']);
             $this->info('Expression: ' . $event['expression']);
             $this->info('Is Due: ' . $event['isDue']);
@@ -76,7 +75,6 @@ class ScheduleList extends Command
                 }
                 $this->table(['Start Time', 'End Time', 'Total Time'], $rows);
             }
-            $this->line('');
             $this->line('--------------------------------------------------------------------------------');
         }
     }
