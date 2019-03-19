@@ -2,11 +2,10 @@
 
 namespace Submtd\LaravelScheduleWatcher\Commands;
 
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Console\Scheduling\Schedule;
-use Cron\CronExpression;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 
 class ScheduleList extends Command
 {
@@ -30,6 +29,7 @@ class ScheduleList extends Command
                 'expression' => $event->getExpression(),
                 'isDue' => $event->isDue(app()),
                 'nextRun' => (string) $event->nextRunDate(),
+                'lastRuns' => Cache::tags(['laravel-schedule-watcher'])->get($event->id(), []),
             ];
             // $name = $event->getSummaryForDisplay();
             // $this->info('Name: ' . static::fixupCommand($name));
