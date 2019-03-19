@@ -35,7 +35,7 @@ class ScheduleList extends Command
                 'id' => $event->id(),
                 'command' => static::fixupCommand($event->getSummaryForDisplay()),
                 'expression' => $event->getExpression(),
-                'isDue' => $event->isDue(app()),
+                'isDue' => (boolean) $event->isDue(app()),
                 'nextRun' => bcdiv(Carbon::now()->diffInSeconds($event->nextRunDate()), 60, 2) . ' minutes',
                 // 'nextRun' => (string) $event->nextRunDate(),
                 'lastRun' => (string) $lastRun,
