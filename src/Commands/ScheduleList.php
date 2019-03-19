@@ -4,7 +4,6 @@ namespace Submtd\LaravelScheduleWatcher\Commands;
 
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Console\Scheduling\Schedule;
 use Cron\CronExpression;
 use Illuminate\Support\Str;
@@ -24,25 +23,25 @@ class ScheduleList extends Command
 
     public function handle()
     {
-        $lastRunDates = Cache::get('laravel-schedule-watcher-events', []);
         foreach ($this->schedule->events() as $event) {
-            $name = $event->getSummaryForDisplay();
-            $this->info('Name: ' . static::fixupCommand($name));
-            $this->info('Expression: ' . $event->getExpression());
-            $this->info('Is Due: ' . $event->isDue(app()));
-            if (!isset($lastRunDates[md5($name)])) {
-                $this->warn('No previous run dates found.');
-                continue;
-            }
-            $rows = [];
-            foreach ($lastRunDates[md5($name)] as $lastRunDate) {
-                $rows[] = [
-                    (string) $lastRunDate['startTime'],
-                    (string) $lastRunDate['endTime'],
-                    $lastRunDate['totalTime'],
-                ];
-            }
-            $this->table(['Start Time', 'End Time', 'Total Time'], $rows);
+            $this->info('Name: ' . static::fixupCommand($event->getSummaryForDisplay()));
+            // $name = $event->getSummaryForDisplay();
+            // $this->info('Name: ' . static::fixupCommand($name));
+            // $this->info('Expression: ' . $event->getExpression());
+            // $this->info('Is Due: ' . $event->isDue(app()));
+            // if (!isset($lastRunDates[md5($name)])) {
+            //     $this->warn('No previous run dates found.');
+            //     continue;
+            // }
+            // $rows = [];
+            // foreach ($lastRunDates[md5($name)] as $lastRunDate) {
+            //     $rows[] = [
+            //         (string) $lastRunDate['startTime'],
+            //         (string) $lastRunDate['endTime'],
+            //         $lastRunDate['totalTime'],
+            //     ];
+            // }
+            // $this->table(['Start Time', 'End Time', 'Total Time'], $rows);
             // $this->info('Last Run: ' . isset($lastRunDates[md5($name)]) ? $lastRunDates[md5($name)] : 'never');
             // $expression = $event->getExpression();
             // $nextRun = $event->nextRunDate();
