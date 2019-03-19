@@ -11,7 +11,7 @@ class DecoratedScheduleRunCommand extends ScheduleRunCommand
     protected function runEvent($event)
     {
         $startTime = Carbon::now();
-        $this->line("<info>Running scheduled command:</info> $name");
+        $this->line('<info>Running scheduled command:</info> ' . $event->getSummaryForDisplay());
         $event->run($this->laravel);
         $this->eventsRan = true;
         $endTime = Carbon::now();
