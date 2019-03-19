@@ -55,7 +55,7 @@ class ScheduleList extends Command
         foreach ($output as $event) {
             $this->info('Command: ' . $event['command']);
             $this->line('--------------------------------------------------------------------------------');
-            $this->line();
+            $this->line('');
         }
     }
 
